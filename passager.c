@@ -1,4 +1,6 @@
 #include "passager.h"
+#include "types.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 /*
@@ -6,7 +8,7 @@ Cette fonction a pour objectif de créer un passager
 ayant un identifiant et une destination particulière.
 */
 ptr_passager CreerPassager(int id, chaine dest){
-    ptr_passager p = (passagers) malloc(sizeof(passager_t));
+    ptr_passager p = (ptr_passager) malloc(sizeof(passager_t));
     if(p == NULL){
         printf("Error d'allocation, on ne peut pas creer un passager maintenemt.\n");
         return p;
@@ -56,11 +58,11 @@ liste des passagers 'liste' et met à jour le contenu
 de 'liste'
 */
 passager_t SupprimerTete(listePassagers_t *liste){
-    if(liste.taille <= 1){
+    if(liste->taille <= 1){
         free(liste->tete);
         liste->taille = 0;
         liste->dernier = NULL;
-        return NULL;
+        return;
     }
     else{
         ptr_passager p = liste->tete;
@@ -107,28 +109,34 @@ listePassagers_t CreerListePassagers(){
 /*
 Annuler une réservation tend à rechercher un ID dans une liste, extraire le passager de la liste et s’assurer que le chainage du parent avec l’enfant est assuré correctement.
 */
-void  AnnulerReservation(listePassagers_t* liste, int id){
-    ptr_passager p = liste->tete;
-
+listePassagers_t AnnulerReservation(listePassagers_t liste, int id){
+    ptr_passager p = liste.tete;
+    if(p->id == id){
+        SupprimerTete(&liste);
+        return liste;
+    }
     while((p->suivant != NULL) && (p->suivant->id != id)){
         p = p->suivant;
     }
     if (p->suivant != NULL){ //donc p->suivant->id = id
-        SupprimerSuivant(p, liste);
+        SupprimerSuivant(p, &liste);
     }
     else
         printf("Passager de ID = %d n'est pas trouvé.\n",id);
+    
+    return liste;
 }
 
 /*
 Après que la réservation soit faite, l’embarquement effectif du passager doit être réalisé en ajoutant le passager dans la liste des passagers du train. Cette fonction retourne une liste de passager et ajoute la structure Passager (passagerAAjouter) dans la liste.
 */
-passagers_t AjouterPassagerDansLaListe(ptr_passager passagerAAjouter,listePassagers_t *liste){
-    liste->dernier->suivant = passagerAAjouter;
+listePassagers_t AjouterPassagerDansLaListe(ptr_passager passagerAAjouter,listePassagers_t *liste){
+    /*liste->dernier->suivant = passagerAAjouter;
     liste->dernier = liste->dernier->suivant;
     liste->dernier->suivant = NULL;
-    liste->taille++;
-    return liste;
+    liste->taille++;*/
+    AjouterSuivant(liste->dernier, liste, passagerAAjouter);
+    return *liste;
 }
 /*
 Affiche un passager en énumérant ses propriétés. Identifiant, Destination 
@@ -197,7 +205,7 @@ listePassagers_t ReservationPlace(listePassagers_t ListePassagers, train_t * Tra
         }
 
         //Liste Non vide, aller au dernier element de la liste et ajouter un passager
-        AjouterSuivant(ListePassagers.dernier, &ListePassagers, CreerPassager(ListePassagers.dernier,Destination));
+        AjouterSuivant(ListePassagers.dernier, &ListePassagers, CreerPassager(ListePassagers.dernier->id + 1,Destination));
         
     }
     else //destination non trouvé

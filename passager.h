@@ -1,41 +1,21 @@
 
 #ifndef PASSAGER_H
 #define PASSAGER_H
-
-#define TAILLE_CHAINE 40
-typedef char chaine[TAILLE_CHAINE];
-
-typedef struct passager_t * ptr_passager;
-typedef struct passager_t{
-    int id;
-    chaine destination;
-    ptr_passager suivant;
-}passager_t;
-
-/*
-On définie la liste par cette structure. 
-On ajoute l'adresse de dernier éléments et la taille
-pour rendre la complexité de Taille et avoirDernier en O(1).
-*/
-typedef struct{
-    ptr_passager tete;
-    int taille;
-    ptr_passager dernier;
-}listePassagers_t;
+#include "types.h"
 
 ptr_passager CreerPassager(int, chaine);
 
-int SiListeVide(ptr_passager);
+int SiListeVide(listePassagers_t);
 
-int TailleListe(ptr_passager);
+int TailleListe(listePassagers_t);
 
-ptr_passager AvoirDernierElementList(ptr_passager);
+ptr_passager AvoirDernierElementList(listePassagers_t);
 
-int ExistIdDansListe(int ,ptr_passager);
+int ExistIdDansListe(int ,listePassagers_t);
 
-void AnnulerReservation(int ,ptr_passager *);
+listePassagers_t AnnulerReservation(listePassagers_t,int);
 
-ptr_passager AjouterPassagerDansLaListe(ptr_passager ,listePassagers_t*);
+listePassagers_t AjouterPassagerDansLaListe(ptr_passager ,listePassagers_t*);
 
 void AfficherPassagers(listePassagers_t);
 

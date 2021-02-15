@@ -1,11 +1,13 @@
 #include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
+#include <string.h>
 #include "quai.h"
 #include "passager.h"
 #include "train.h"
+#include "types.h"
 
-#define MaxTrain 20
-#define MaxParkingRails 8
-#define MapSize 20
+
 int main()
 {   
 
@@ -18,7 +20,7 @@ int main()
     // matrice des destinations 
     chaine Destinations[MapSize][2];
 
-    int NumDestinations= InitialiserLesDestinationsDisponibles(Destinations);
+    int NumDestinations = InitialiserLesDestinationsDisponibles(Destinations);
 
     // Ajout des trains
     NumTrain = AjouterTrain(Trains,NumTrain,15,"Tokyo");
@@ -52,7 +54,11 @@ int main()
         AfficherParkingRail(Quais,NumQuai); 
         NbrHeur++;
         printf("************Heure %d***********\n\n",NbrHeur);
-        srand(time(NULL));// appeler la fonction random pour générer des nombres aléatoire de réservations et d’annulations 
+        /*
+        appeler la fonction random pour générer des nombres aléatoire 
+        de réservations et d’annulations
+        */
+        srand(time(NULL)); 
 
         int NombreAleatoireDeReservations=rand()%10+5;
         int NombreAleatoireDAnulations=rand()%5;
@@ -83,7 +89,7 @@ int main()
         printf("\n Nombre de passagers en attente %d\n",TailleListe(ListeDesPassagerEnAttente));
         AfficherPassagers(ListeDesPassagerEnAttente);
         //affichier l’état des passagers en attente avant embarquement et après que les réservations et annulations soient faites
-        ListeDesPassagerEnAttente=Embarquement(Quais, NumQuai, ListeDesPassagerEnAttente, Destinations,NumDestinations, Trains,NumTrain );
+        ListeDesPassagerEnAttente = Embarquement(Quais, NumQuai, ListeDesPassagerEnAttente, Destinations,NumDestinations, Trains,NumTrain );
 
         // Embarquer les passager ! 
         AfficherTrains(Trains,NumTrain);
@@ -95,9 +101,13 @@ int main()
         printf("\n Nombre de passagers en attente après embarquement %d\n",TailleListe(ListeDesPassagerEnAttente));
 
         AfficherPassagers(ListeDesPassagerEnAttente);
-        // afficher l’état des passagers en attente après embarquement, dans le cas ou votre programme marche correctement, il ne devrai y avoir aucun passager qui demande une destination qui vient d’être proposé par un train sur le départ sauf si le train est remplis a 100%.
-        
-        UpdateQuais( Quais, NumQuai, Trains, NumTrain );
+        /*afficher l’état des passagers en attente après embarquement, 
+        dans le cas ou votre programme marche correctement, il 
+        ne devrai y avoir aucun passager qui demande une destination qui 
+        vient d’être proposé par un train sur le départ sauf si le train est 
+        remplis a 100%.
+        */
+        UpdateQuais( Quais, NumQuai, Trains, NumTrain);
 
         //Mettre a jour les quais en récupérant les train en attente et en avançant les tarins dans la pile pour proposer de nouvelle destinations.
         system("pause"); 

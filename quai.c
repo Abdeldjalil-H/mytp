@@ -1,13 +1,15 @@
+#include <stdio.h>
+#include <string.h>
 #include "quai.h"
 #include "train.h"
-
+#include "types.h"
 
 /*
 Cette fonction a pour objectif de créer un quai ayant une capacité maximum d’admission de train avec un id
 */
-quai_t CreeUnParkingRail(int id ,int capacite){
+quai_t CreerUnParkingRail(char* id, int capacite){
     quai_t q;
-    q.id = id;
+    strcpy(q.id, id);
     q.capacite = capacite;
     q.premierTrain = -1;
     
@@ -24,7 +26,7 @@ int Empiler (train_t train,quai_t *q){
     }
     else{
         q->premierTrain++ ;
-        q->listeTrain[q->premierTrain]=train;
+        q->listeDesTrains[q->premierTrain] = train;
         return 1;
     }
 }
@@ -33,7 +35,7 @@ int Empiler (train_t train,quai_t *q){
 Prendre un train d’un quai particulier et le retourner.
 */
 train_t Depiler(quai_t *q){
-    train_t t = q->listeTrain[q->premierTrain];
+    train_t t = q->listeDesTrains[q->premierTrain];
     q->premierTrain--;
     return t;
 }
@@ -92,9 +94,5 @@ void AfficherParkingRail(quai_t* ParkingRails, int NumParkingRail){
         printf("Le nombre de train dans le quai %s est de %d \n",ParkingRails[i].id,ParkingRails[i].premierTrain+1);
         for (int j=ParkingRails[i].premierTrain;j>=0;j--)
             printf("le train ID=%d prendra le départ en %d position\n",ParkingRails[i].listeDesTrains[j].id,ParkingRails[i].premierTrain-j+1);
-    
-
-
     }
-
 }

@@ -2,19 +2,7 @@
 #ifndef TRAIN_H
 #define TRAIN_H
 
-#define TAILLE_MAX_DE_QUAI 10
-
-typedef struct train{
-    int id;
-    int capaciteMAX;
-    int tauxDeRemplissage;
-    listePassagers_t listeDesPassagers;
-    chaine destination;
-    int kmRestant;
-    int vitesse;
-}train_t;
-
-typedef train_t listeTrain_t[TAILLE_MAX_DE_QUAI];
+#include "types.h"
 
 train_t CreerTrain(int, int, chaine);
 
@@ -27,4 +15,9 @@ int SiTrainRemplis(train_t);
 void AfficherTrains(train_t*, int);
 
 void MiseAJourTableauDesTrain(train_t, train_t*, int);
+
+void TrainEnMarche(quai_t*,int, train_t*, int);
+
+//listePassagers_t Embarquement(quai_t*, int, listePassagers_t, chaine**, int, train_t*, int);
+listePassagers_t Embarquement(quai_t*, int, listePassagers_t, chaine Destinations[MapSize][2], int, train_t*, int);
 #endif

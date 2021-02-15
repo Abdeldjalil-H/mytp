@@ -1,15 +1,9 @@
 
 #ifndef QUAI_H
 #define QUAI_H
+#include "types.h"
 
-typedef struct quai{
-    int id;
-    listeTrain_t listeDesTrains;
-    int premierTrain; //sommet de la pile
-    int capacite;
-}quai_t;
-
-quai_t CreeUnParkingRail(int ,int);
+quai_t CreerUnParkingRail(char* ,int);
 
 int Empiler (train_t ,quai_t *);
 
